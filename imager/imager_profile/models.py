@@ -32,8 +32,8 @@ class ImagerProfile(models.Model):
         related_name='profile'
     )
     camera_type = models.CharField(max_length=255)
-    photography_type = models.CharField(
-        max_length=20,
+    type_of_photography = models.CharField(
+        max_length=128,
         choices=PHOTOGRAPHY_TYPES,
     )
     friends = models.ManyToManyField(
