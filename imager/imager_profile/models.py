@@ -25,10 +25,19 @@ REGIONS = [
 ]
 
 
+class ActiveUsers(models.Manager):
+    """Returns users with active profiles."""
+    def get_queryset(self):
+        qs = super(ActiveUsers, self).get_queryset()
+        return qs.filter(user__is_active__exact=True)
+
+
 @python_2_unicode_compatible
 class ImagerProfile(models.Model):
+    """User model for imager profile."""
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
         related_name='profile'
     )
     camera_type = models.CharField(max_length=255)
@@ -44,3 +53,8 @@ class ImagerProfile(models.Model):
         max_length=3,
         choices=REGIONS,
     )
+    active = ActiveUsers()
+
+    @property
+    def is_active(self):
+        return self.user.is_active
