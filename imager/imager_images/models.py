@@ -20,18 +20,26 @@ class Photo(models.Model):
     description = models.TextField()
     date_uploaded = models.DateField(auto_now_add=True)
     date_modified = models.DateField(auto_now=True)
-    date_published = models.DateTimeField(auto_now=True)
-    published = models.CharField(choices=PUBLISHED_OPTS)
+    date_published = models.DateTimeField()
+    published = models.CharField(
+        max_length=20,
+        choices=PUBLISHED_OPTS,
+        default='public'
+    )
 
 
 @python_2_unicode_compatible
 class Album(models.Model):
     """Album model for imager albums."""
     owner = models.ForeignKey(ImagerProfile, on_delete=models.CASCADE)
-    photos = models.ManyToManyField(Photo, through='ImagerProfile')
+    photos = models.ManyToManyField(Photo)
     title = models.CharField(max_length=255)
     description = models.TextField()
     date_created = models.DateField(auto_now_add=True)
     date_modified = models.DateField(auto_now=True)
-    date_published = models.DateTimeField(auto_now=True)
-    published = models.CharField(choices=PUBLISHED_OPTS)
+    date_published = models.DateTimeField()
+    published = models.CharField(
+        max_length=20,
+        choices=PUBLISHED_OPTS,
+        default='public'
+    )
