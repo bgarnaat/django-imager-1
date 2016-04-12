@@ -9,7 +9,7 @@ class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = User
 
-    username = 'Joe'
+    username = 'Bob'
 
 
 class UserProfileTest(TestCase):
@@ -18,12 +18,16 @@ class UserProfileTest(TestCase):
     def setUp(self):
         """Initialize a test user."""
         self.user = UserFactory.create()
-        self.user.save()
 
     def test_user_profile(self):
         """Test if user has a profile."""
         self.assertIsInstance(self.user.profile, ImagerProfile)
-    #
-    # def test_user_profile_active(self):
-    #     """Test user profile active."""
-    #     self.assertTrue(self.user.profile.is_active)
+
+    def test_user_profile_active(self):
+        """Test user profile active."""
+        self.assertTrue(self.user.profile.is_active)
+
+    def test_user_delete(self):
+        """Test for deleting users."""
+        self.user.delete()
+        self.assertFalse(self.user.profile in ImagerProfile.active.all())
