@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
-from imager_profile import ImagerProfile
+from imager_profile.models import ImagerProfile
 
 
 PUBLISHED_OPTS = [
@@ -19,7 +19,7 @@ class Photo(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     date_uploaded = models.DateField(auto_now_add=True)
-    date_modified = models.DateField(auto_noe=True)
+    date_modified = models.DateField(auto_now=True)
     date_published = models.DateTimeField(auto_now=True)
     published = models.CharField(choices=PUBLISHED_OPTS)
 
@@ -32,6 +32,6 @@ class Album(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     date_created = models.DateField(auto_now_add=True)
-    date_modified = models.DateField(auto_noe=True)
+    date_modified = models.DateField(auto_now=True)
     date_published = models.DateTimeField(auto_now=True)
     published = models.CharField(choices=PUBLISHED_OPTS)
