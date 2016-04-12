@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 from django.db import models
+from django.conf import settings
 from django.utils.encoding import python_2_unicode_compatible
 from imager_profile.models import ImagerProfile
 
@@ -15,7 +16,10 @@ PUBLISHED_OPTS = [
 class Photo(models.Model):
     """Photo model for imager photos."""
     image = models.ImageField(upload_to='photos/')
-    owner = models.ForeignKey(ImagerProfile, on_delete=models.CASCADE)
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
     title = models.CharField(max_length=255)
     description = models.TextField()
     date_uploaded = models.DateField(auto_now_add=True)
@@ -31,7 +35,10 @@ class Photo(models.Model):
 @python_2_unicode_compatible
 class Album(models.Model):
     """Album model for imager albums."""
-    owner = models.ForeignKey(ImagerProfile, on_delete=models.CASCADE)
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
     photos = models.ManyToManyField(Photo)
     title = models.CharField(max_length=255)
     description = models.TextField()

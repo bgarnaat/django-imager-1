@@ -1,8 +1,7 @@
 from django.test import TestCase
-from django.db.models import ImageField
-from django.db.models.fields.files import ImageFieldFile
+# from django.db.models import ImageField
+# from django.db.models.fields.files import ImageFieldFile
 from imager_images.models import Photo, Album
-from imager_profile.models import ImagerProfile
 from imager_profile.tests import UserFactory
 import factory
 
@@ -12,7 +11,14 @@ class PhotoFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Photo
     image = factory.django.ImageField(filename='/tmp/image01.jpg')
-    # date_created = '2016-04-11'
+    date_published = '2016-04-11'
+
+
+class AlbumFactory(factory.django.DjangoModelFactory):
+    """Set up Photo Factory."""
+    class Meta:
+        model = Album
+    date_published = '2016-04-11'
 
 
 class PhotoTest(TestCase):
@@ -29,3 +35,45 @@ class PhotoTest(TestCase):
         """Test photo title field."""
         self.photo.title = 'Outside'
         self.assertEqual(self.photo.title, 'Outside')
+
+    def test_photo_instance(self):
+        """Assert self is instance of Photo."""
+        self.assertIsInstance(self.photo, Photo)
+
+    def test_photo_description(self):
+        """Test photo title field."""
+        self.photo.description = 'A summer day.'
+        self.assertEqual(self.photo.description, 'A summer day.')
+
+    def test_published_default(self):
+        """Test if public is published default."""
+        self.assertEqual(self.photo.published, 'public')
+
+
+class AlbumTest(TestCase):
+    """Test album models."""
+
+    def setUp(self):
+        """Initialize an album."""
+        self.user = UserFactory.create()
+        self.album = AlbumFactory.create(
+            owner=self.user,
+        )
+
+    def test_album_title(self):
+        """Test album title field."""
+        self.album.title = 'Outside'
+        self.assertEqual(self.album.title, 'Outside')
+
+    def test_album_published_default(self):
+        """Test if public is published default."""
+        self.assertEqual(self.album.published, 'public')
+
+    def test_album_instance(self):
+        """Assert self is instance of Photo."""
+        self.assertIsInstance(self.album, Album)
+
+    def test_album_description(self):
+        """Test album title field."""
+        self.album.description = 'A summer day.'
+        self.assertEqual(self.album.description, 'A summer day.')

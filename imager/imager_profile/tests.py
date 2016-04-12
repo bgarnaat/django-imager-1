@@ -24,11 +24,6 @@ class UserProfileTest(TestCase):
         """Test if user has a profile."""
         self.assertIsInstance(self.user.profile, ImagerProfile)
 
-    # def test_user_profile_username(self):
-    #     import pdb; pdb.set_trace()
-    #     profile = ImagerProfile.objects.get(user=self.user)
-    #     self.assertEqual(profile, self.user.username)
-
     def test_user_profile_active(self):
         """Test user profile active."""
         self.assertTrue(self.user.profile.is_active)
