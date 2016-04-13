@@ -17,8 +17,8 @@ from django.conf.urls import url
 from django.contrib import admin
 from .views import home_page
 from .views import ClassView
-# from django.conf.urls.static import static
-# from imager import settings
+from django.conf.urls.static import static
+from imager import settings
 
 # image_urls = []
 # profile_urls = []
@@ -33,6 +33,6 @@ urlpatterns = [
     # url(r'^profile/', imager_profile.urls),
 ]
 
-# if settings.DEBUG:
-#     urlpatterns += static(settings.MEDIA_URL,
-#                           document_root=settings.MEDIA_ROOT)
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)

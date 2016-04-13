@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 from django.db import models
 from django.conf import settings
 from django.utils.encoding import python_2_unicode_compatible
+from imager.settings import MEDIA_ROOT
 
 
 PUBLISHED_OPTS = [
@@ -18,7 +19,7 @@ class Photo(models.Model):
     def __str__(self):
         return self.title
 
-    image = models.ImageField(upload_to='photos/')
+    image = models.ImageField(upload_to=MEDIA_ROOT)
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
