@@ -15,11 +15,22 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from django.conf.urls.static import static
-from imager import settings
+from .views import home_page
+from .views import ClassView
+# from django.conf.urls.static import static
+# from imager import settings
+
+# image_urls = []
+# profile_urls = []
+# api_urls = []
+#
+# urlpatterns = image_urls + profile_urls + api_urls
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^home/(?P<id>[0-9]+)$', ClassView.as_view(), name='home_page'),
+    # url(r'^home/(?P<id>[0-9]+)$', home_page, name='home_page'),
+    # url(r'^profile/', imager_profile.urls),
 ]
 
 # if settings.DEBUG:
