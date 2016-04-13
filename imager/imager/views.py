@@ -1,20 +1,16 @@
 # coding=utf-8
 from __future__ import unicode_literals
-# from django.http import HttpResponse
-# from django.template import loader
-from django.shortcuts import render
+from django.shortcuts import redirect
 from django.views.generic import TemplateView
-# from django.contrib.auth import login, logout
+from django.contrib.auth import logout
 from imager.settings import MEDIA_URL
 from imager_images.models import Photo
-# from django.contrib.auth.views import login
 import os
 
 
-def home_page(request, * args, **kwargs):
-    """View function for our home page."""
-    foo = 'garbanzo beans'
-    return render(request, 'home.html', context={'foo': foo})
+def logout_view(request):
+    logout(request)
+    return redirect('home_page')
 
 
 class ClassView(TemplateView):

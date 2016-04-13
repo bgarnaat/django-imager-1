@@ -15,25 +15,16 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-# from .views import home_page
-from .views import ClassView
+from .views import ClassView, logout_view
 from django.conf.urls.static import static
 from imager import settings
-# from django.contrib.auth.views import login
-
-# image_urls = []
-# profile_urls = []
-# api_urls = []
-#
-# urlpatterns = image_urls + profile_urls + api_urls
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', ClassView.as_view(), name='home_page'),
     url(r'^login/$', 'django.contrib.auth.views.login'),
-    # url(r'^registration/(?P<id>[0-9]+)$', ClassView.as_view(), name='home_page'),
-    # url(r'^home/(?P<id>[0-9]+)$', home_page, name='home_page'),
-    # url(r'^profile/', imager_profile.urls),
+    url(r'^logout/$', logout_view),
+    url(r'^accounts/', include('registration.backends.hmac.urls')),
 ]
 
 if settings.DEBUG:
