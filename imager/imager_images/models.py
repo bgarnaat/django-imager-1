@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 from django.db import models
 from django.conf import settings
 from django.utils.encoding import python_2_unicode_compatible
-from imager_profile.models import ImagerProfile
+from imager.settings import MEDIA_ROOT
 
 
 PUBLISHED_OPTS = [
@@ -15,7 +15,11 @@ PUBLISHED_OPTS = [
 @python_2_unicode_compatible
 class Photo(models.Model):
     """Photo model for imager photos."""
-    image = models.ImageField(upload_to='photos/')
+
+    def __str__(self):
+        return self.title
+
+    image = models.ImageField(upload_to=MEDIA_ROOT)
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
@@ -35,6 +39,10 @@ class Photo(models.Model):
 @python_2_unicode_compatible
 class Album(models.Model):
     """Album model for imager albums."""
+
+    def __str__(self):
+        return self.title
+
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE

@@ -35,6 +35,10 @@ class ActiveUsers(models.Manager):
 @python_2_unicode_compatible
 class ImagerProfile(models.Model):
     """User model for imager profile."""
+
+    def __str__(self):
+        return self.user.username
+
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -53,6 +57,7 @@ class ImagerProfile(models.Model):
         max_length=3,
         choices=REGIONS,
     )
+    objects = models.Manager()
     active = ActiveUsers()
 
     @property

@@ -7,8 +7,9 @@ from imager_profile.models import ImagerProfile
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_profile(sender, instance, **kwargs):
-    profile = ImagerProfile(user=instance)
-    profile.save()
+    if kwargs.get('created', False):
+        profile = ImagerProfile(user=instance)
+        profile.save()
 
 
 @receiver(pre_delete, sender=settings.AUTH_USER_MODEL)

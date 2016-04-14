@@ -57,7 +57,7 @@ ROOT_URLCONF = 'imager.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'imager', 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -127,5 +127,11 @@ USE_TZ = True
 STATIC_URL = '/static/'
 # STATIC_ROOT = ''
 
-# MEDIA_ROOT = '/'
-# MEDIA = '/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+# Account activation days
+ACCOUNT_ACTIVATION_DAYS = 7
+
+# Email backends
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

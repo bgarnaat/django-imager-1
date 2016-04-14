@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, override_settings
 # from django.db.models import ImageField
 # from django.db.models.fields.files import ImageFieldFile
 from imager_images.models import Photo, Album
@@ -6,6 +6,7 @@ from imager_profile.tests import UserFactory
 import factory
 
 
+# @override_settings(MEDIA_ROOT='/tmp')
 class PhotoFactory(factory.django.DjangoModelFactory):
     """Set up Photo Factory."""
     class Meta:
@@ -21,6 +22,7 @@ class AlbumFactory(factory.django.DjangoModelFactory):
     date_published = '2016-04-11'
 
 
+# @override_settings(MEDIA_ROOT='/tmp/')
 class PhotoTest(TestCase):
     """Test photo models."""
 
@@ -35,6 +37,10 @@ class PhotoTest(TestCase):
         """Test photo title field."""
         self.photo.title = 'Outside'
         self.assertEqual(self.photo.title, 'Outside')
+
+    def test_photo_has_id(self):
+        """Test photo has an id."""
+        self.assertTrue(self.photo.id)
 
     def test_photo_instance(self):
         """Assert self is instance of Photo."""

@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, Client
 from imager_profile.models import ImagerProfile
 from django.contrib.auth.models import User
 import factory
@@ -11,6 +11,7 @@ class UserFactory(factory.django.DjangoModelFactory):
 
     username = factory.Faker('user_name')
     email = factory.Faker('email')
+    password = factory.Faker('password')
 
 
 class UserProfileTest(TestCase):
@@ -47,3 +48,55 @@ class UserProfileTest(TestCase):
         """Test for deleting users."""
         self.user.delete()
         self.assertFalse(self.user.profile in ImagerProfile.active.all())
+
+    def test_user_already_created_check(self):
+        """Test post save handler."""
+        self.user.camera_type = 'Canon'
+        self.user.save()
+        self.assertEqual(self.user.camera_type, 'Canon')
+
+
+class ViewTests(TestCase):
+    def setUp(self):
+        """Set up test client."""
+        self.client = Client()
+        self.user = UserFactory.create()
+
+    def test_homepage(self):
+        """Test homepage view."""
+        response = self.client.get('/')
+        self.assertEquals(response.status_code, 200)
+
+    def test_register(self):
+        """Test register view."""
+        response = self.client.get('/accounts/register', follow=True)
+        self.assertEquals(response.status_code, 200)
+
+    # def test_register_post(self):
+    #     response = self.client.post('/accounts/register/complete', {
+    #         'username': 'joe123',
+    #         'email': 'example@example.com',
+    #         'password': 'secret',
+    #         'password': 'secret'}, follow=True)
+    #     import pdb; pdb.set_trace()
+
+    def test_login(self):
+        """Test for login view."""
+        response = self.client.post(
+            '/accounts/login', {'username': self.user.username,
+                                'password': self.user.password}, follow=True)
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(
+            response.redirect_chain[0], ('/accounts/login/', 301))
+
+    def test_logout(self):
+        """Test for logout view."""
+        response = self.client.get('/logout', follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEquals(
+            response.redirect_chain[0], ('/logout/', 301))
+
+    def test_activate(self):
+        """Test activate with no activation key."""
+        response = self.client.get('/accounts/activate', follow=True)
+        self.assertEqual(response.status_code, 404)
