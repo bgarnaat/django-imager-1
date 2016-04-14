@@ -63,14 +63,25 @@ class ViewTests(TestCase):
         self.user = UserFactory.create()
 
     def test_homepage(self):
+        """Test homepage view."""
         response = self.client.get('/')
         self.assertEquals(response.status_code, 200)
 
     def test_register(self):
+        """Test register view."""
         response = self.client.get('/accounts/register', follow=True)
         self.assertEquals(response.status_code, 200)
 
+    # def test_register_post(self):
+    #     response = self.client.post('/accounts/register/complete', {
+    #         'username': 'joe123',
+    #         'email': 'example@example.com',
+    #         'password': 'secret',
+    #         'password': 'secret'}, follow=True)
+    #     import pdb; pdb.set_trace()
+
     def test_login(self):
+        """Test for login view."""
         response = self.client.post(
             '/accounts/login', {'username': self.user.username,
                                 'password': self.user.password}, follow=True)
@@ -79,11 +90,13 @@ class ViewTests(TestCase):
             response.redirect_chain[0], ('/accounts/login/', 301))
 
     def test_logout(self):
+        """Test for logout view."""
         response = self.client.get('/logout', follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertEquals(
             response.redirect_chain[0], ('/logout/', 301))
-    #
-    # def test_activate(self):
-    #     response = self.client.get('/accounts/activate')
-    #     self.assertEqual(response.status_code, 200)
+
+    def test_activate(self):
+        """Test activate with no activation key."""
+        response = self.client.get('/accounts/activate', follow=True)
+        self.assertEqual(response.status_code, 404)
