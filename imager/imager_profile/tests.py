@@ -47,3 +47,9 @@ class UserProfileTest(TestCase):
         """Test for deleting users."""
         self.user.delete()
         self.assertFalse(self.user.profile in ImagerProfile.active.all())
+
+    def test_user_already_created_check(self):
+        """Test post save handler."""
+        self.user.camera_type = 'Canon'
+        self.user.save()
+        self.assertEqual(self.user.camera_type, 'Canon')

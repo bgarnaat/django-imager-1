@@ -1,0 +1,1 @@
+To activate your account at {{ site }}, click here: {% url 'registration_activate' activation_key %}.  You have {{ expiration_days }} days to activate your account.

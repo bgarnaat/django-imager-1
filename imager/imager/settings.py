@@ -129,3 +129,9 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+# Account activation days
+ACCOUNT_ACTIVATION_DAYS = 7
+
+# Email backends
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
