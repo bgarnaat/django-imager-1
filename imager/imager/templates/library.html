@@ -16,7 +16,7 @@
   <h2>Album Gallery</h2>
   <ul>
     {% for cover in album_cover %}
-    <li><a href="/images/album/{{cover.1.id}}"><img src="{{cover.0}}" alt="" width="100px" height="100px" /></a></li>
+    <li><a href="/images/album/{{cover.1}}"><img src="{{cover.0}}" alt="" width="100px" height="100px" /></a></li>
     {% endfor %}
   </ul>
 </section>

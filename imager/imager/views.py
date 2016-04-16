@@ -42,7 +42,10 @@ class LibraryView(TemplateView):
     def get_context_data(self):
         img = Photo.objects.all().filter(owner=self.request.user)
         album = Album.objects.all().filter(owner=self.request.user)
-        album_cover = [(item.photos.all()[0].image.url, item) for item in album]
+        try:
+            album_cover = [(item.photos.all()[0].image.url, item) for item in album]
+        except IndexError:
+            album_cover = os.path.join(MEDIA_URL, 'neil.jpg')
         return {'album_cover': album_cover, 'img': img}
 
 
@@ -50,8 +53,12 @@ class AlbumView(TemplateView):
     template_name = 'album.html'
 
     def get_context_data(self, *arg, **kwargs):
-        album = Album.objects.all().filter(id=kwargs['id'])[0]
-        photos = album.photos.all()
+        try:
+            album = Album.objects.all().filter(id=kwargs['id'])[0]
+            photos = album.photos.all()
+        except IndexError:
+            album = None
+            photos = []
         return {'album': album, 'photos': photos}
 
 
@@ -59,5 +66,8 @@ class PhotoView(TemplateView):
     template_name = 'photo.html'
 
     def get_context_data(self, *arg, **kwargs):
-        img = Photo.objects.all().filter(id=kwargs['id'])[0]
+        try:
+            img = Photo.objects.all().filter(id=kwargs['id'])[0]
+        except IndexError:
+            img = None
         return {'img': img}
