@@ -1,0 +1,11 @@
+{% extends "home.html" %}
+{% block content %}
+<h1>Hello {{user.username}}</h1>
+
+<section>
+  <h2>Photo</h2>
+  <a href="/images/photo/{{img.id}}"><img src="{{img.image.url}}" alt="" width="100px" height="100px" /></a>
+  <a href="/images/photo/{{img.id}}"><img src="{{img.image.url}}" alt="" /></a>
+</section>
+
+{% endblock %}

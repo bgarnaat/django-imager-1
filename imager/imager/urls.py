@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from .views import ClassView, logout_view
+from .views import ClassView, logout_view, ProfileView, LibraryView, AlbumView, PhotoView
 from django.conf.urls.static import static
 from imager import settings
 
@@ -25,7 +25,10 @@ urlpatterns = [
     # url(r'^login/$', 'django.contrib.auth.views.login'),
     url(r'^logout/$', logout_view),
     url(r'^accounts/', include('registration.backends.hmac.urls')),
-    url(r'^accounts/profile/$', ClassView.as_view(), name='home_page'),
+    url(r'^accounts/profile/$', ProfileView.as_view(), name='profile'),
+    url(r'^images/library/$', LibraryView.as_view(), name='library'),
+    url(r'^images/album/(?P<id>[0-9])$', AlbumView.as_view(), name='album'),
+    url(r'^images/photo/(?P<id>[0-9])$', PhotoView.as_view(), name='photo'),
 ]
 
 if settings.DEBUG:
