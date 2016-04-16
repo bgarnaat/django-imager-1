@@ -1,0 +1,23 @@
+{% extends "home.html" %}
+{% load thumbnail %}
+{% block content %}
+<h1>Hello {{user.username}}</h1>
+
+
+<section>
+  <h2>Photo Gallery</h2>
+  <ul>
+    {% for image in img %}
+      <li><a href="/images/photo/{{image.id}}"><img src="{{image.image.url}}" alt="" width="100px" height="100px" /></a></li>
+    {% endfor %}
+  </ul>
+</section>
+<section>
+  <h2>Album Gallery</h2>
+  <ul>
+    {% for cover in album_cover %}
+    <li><a href="/images/album/{{cover.1}}"><img src="{{cover.0}}" alt="" width="100px" height="100px" /></a></li>
+    {% endfor %}
+  </ul>
+</section>
+{% endblock %}

@@ -6,7 +6,7 @@
   </head>
   <body>
     <header>
-      <h1>{{user.username}}</h1>
+      <h1><a href="/accounts/profile">{{user.username}}</a></h1>
       <img id="logo" src="{{img_url}}" alt="" />
       <h1>TITLE GOES HERE</h1>
       <ul id="loginout">
@@ -16,11 +16,14 @@
       </ul>
       <nav>
         <ul id="nav_ul">
-          <li class="nav_li">Home</li>
-          <li class="nav_li">About</li>
-          <li class="nav_li">Resources</li>
+          <li class="nav_li"><a href="/">Home</a></li>
+          <li class="nav_li"><a href="/images/library/">Library</a></li>
         </ul>
       </nav>
     </header>
+    <main>
+      {% block content %}
+      {% endblock %}
+    </main>
   </body>
 </html>
