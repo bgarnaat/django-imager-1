@@ -19,6 +19,8 @@ from .views import ClassView, logout_view, ProfileView, LibraryView, AlbumView, 
 from django.conf.urls.static import static
 from imager import settings
 
+
+# TODO: WRAP URLS IN LOGIN REQUIRED...  it will solve every problem ever, for realy-yo...
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', ClassView.as_view(), name='home_page'),
