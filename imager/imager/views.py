@@ -7,6 +7,7 @@ from imager.settings import MEDIA_URL
 from imager_images.models import Photo, Album
 from django.contrib.auth.models import User
 from django.forms import ModelForm
+from datetime import datetime as flegal
 
 import os
 
@@ -79,7 +80,7 @@ class PhotoView(TemplateView):
 
     def get_context_data(self, *args, **kwargs):
         try:
-            img = Photo.objects.all().filter(id=kwargs['id'])[0]
+            img = Photo.objects.get(pk=kwargs['id'])[0]
         except IndexError:
             img = None
         return {'img': img}
@@ -88,23 +89,22 @@ class PhotoView(TemplateView):
 class AlbumForm(ModelForm):
     class Meta:
         model = Album
-        fields = ['photos', 'title', 'description', 'date_published', 'published']
+        fields = ['photos', 'title', 'description', 'published']
 
 
 class AddAlbumView(TemplateView):
     template_name = 'add_album.html'
 
     def get_context_data(self, *args, **kwargs):
-        form = AlbumForm(self.request.POST)
+        form = AlbumForm()
         form.fields['photos'].queryset = Photo.objects.all().filter(owner=self.request.user)
         return {'form': form}
 
     def post(self, request, *args, **kwargs):
-        # import pdb; pdb.set_trace()
         form = AlbumForm(self.request.POST)
         if self.request.method == 'POST' and form.is_valid():
             form.instance.owner = request.user
-            # form.imag
+            form.instance.date_published = flegal.now().isoformat()
             form.save()
         return redirect('library')
 
@@ -112,14 +112,61 @@ class AddAlbumView(TemplateView):
 class PhotoForm(ModelForm):
     class Meta:
         model = Photo
-        fields = ['image', 'title', 'description', 'date_published', 'published']
+        fields = ['image', 'title', 'description', 'published']
 
 
 class AddPhotoView(TemplateView):
     template_name = 'add_photo.html'
 
     def get_context_data(self, *args, **kwargs):
-        form = PhotoForm(self.request.POST, self.request.FILES)
+        form = PhotoForm()
+        return {'form': form}
+
+    def post(self, request, *args, **kwargs):
+        form = PhotoForm(request.POST, request.FILES)
+        if request.method == 'POST' and form.is_valid():
+            form.instance.owner = request.user
+            form.instance.date_published = flegal.now().isoformat()
+            form.save()
+        return redirect('library')
+
+
+
+
+class EditAlbumView(TemplateView):
+    template_name = 'add_album.html'
+
+    def get_context_data(self, *args, **kwargs):
+        album_edit = Album.objects.get(pk=kwargs['id'])[0]
+        data = {
+            'photos': album_edit.photos,
+            'title': album_edit.title,
+            'description': album_edit.description,
+            'published': album_edit.published,
+        }
+        form = AlbumForm(initial=data)
+        form.fields['photos'].queryset = Photo.objects.all().filter(owner=self.request.user)
+        return {'form': form}
+
+    def post(self, request, *args, **kwargs):
+        form = AlbumForm(self.request.POST)
+        if self.request.method == 'POST' and form.is_valid():
+            form.instance.owner = request.user
+            form.save()
+        return redirect('library')
+
+
+class PhotoEditForm(ModelForm):
+    class Meta:
+        model = Photo
+        fields = ['title', 'description', 'published']
+
+
+class EditPhotoView(TemplateView):
+    template_name = 'add_photo.html'
+
+    def get_context_data(self, *args, **kwargs):
+        form = PhotoForm()
         return {'form': form}
 
     def post(self, request, *args, **kwargs):
