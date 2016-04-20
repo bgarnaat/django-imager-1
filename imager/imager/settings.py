@@ -85,6 +85,10 @@ DATABASES = {
         'PASSWORD': os.environ.get('DB_PW'),
         'HOST': os.environ.get('DB_HOST'),
     }
+
+    # import dj_database_url
+    #
+    # DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 }
 
 

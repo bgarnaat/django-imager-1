@@ -1,0 +1,11 @@
+{% extends "home.html" %}
+{% block content %}
+<h1>Hello {{user.username}}</h1>
+
+<form action="/images/photos/add/" method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <input type="submit" value="Add Photo" />
+</form>
+
+{% endblock %}

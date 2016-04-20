@@ -15,9 +15,11 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from .views import ClassView, logout_view, ProfileView, LibraryView, AlbumView, PhotoView
+from .views import ClassView, logout_view, ProfileView, LibraryView, AlbumView
+from .views import PhotoView, AddAlbumView, AddPhotoView
 from django.conf.urls.static import static
 from imager import settings
+from django.contrib.auth.decorators import login_required
 
 
 # TODO: WRAP URLS IN LOGIN REQUIRED...  it will solve every problem ever, for realy-yo...
@@ -29,8 +31,10 @@ urlpatterns = [
     url(r'^accounts/', include('registration.backends.hmac.urls')),
     url(r'^accounts/profile/$', ProfileView.as_view(), name='profile'),
     url(r'^images/library/$', LibraryView.as_view(), name='library'),
-    url(r'^images/album/(?P<id>[0-9])$', AlbumView.as_view(), name='album'),
-    url(r'^images/photo/(?P<id>[0-9])$', PhotoView.as_view(), name='photo'),
+    url(r'^images/album/(?P<id>[0-9]+)$', AlbumView.as_view(), name='album'),
+    url(r'^images/photo/(?P<id>[0-9]+)$', PhotoView.as_view(), name='photo'),
+    url(r'^images/albums/add/$', login_required(AddAlbumView.as_view()), name='add_album'),
+    url(r'^images/photos/add/$', AddPhotoView.as_view(), name='add_photo'),
 ]
 
 if settings.DEBUG:
