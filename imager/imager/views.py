@@ -52,7 +52,8 @@ class LibraryView(TemplateView):
             try:
                 album_cover.append((item.photos.all()[0].image.url, item.id))
             except IndexError:
-                album_cover.append((os.path.join(MEDIA_URL, 'neil.jpg'), item.id))
+                album_cover.append(
+                    (os.path.join(MEDIA_URL, 'neil.jpg'), item.id))
         return {
             'album_cover': album_cover,
             'album_qty': album_qty,
@@ -97,7 +98,8 @@ class AddAlbumView(TemplateView):
 
     def get_context_data(self, *args, **kwargs):
         form = AlbumForm()
-        form.fields['photos'].queryset = Photo.objects.all().filter(owner=self.request.user)
+        form.fields['photos'].queryset = Photo.objects.all().filter(
+            owner=self.request.user)
         return {'form': form}
 
     def post(self, request, *args, **kwargs):
@@ -131,8 +133,6 @@ class AddPhotoView(TemplateView):
         return redirect('library')
 
 
-
-
 class EditAlbumView(TemplateView):
     template_name = 'add_album.html'
 
@@ -145,11 +145,13 @@ class EditAlbumView(TemplateView):
             'published': album_edit.published,
         }
         form = AlbumForm(initial=data)
-        form.fields['photos'].queryset = Photo.objects.all().filter(owner=self.request.user)
+        form.fields['photos'].queryset = Photo.objects.all().filter(
+            owner=self.request.user)
         return {'form': form}
 
     def post(self, request, *args, **kwargs):
-        form = AlbumForm(self.request.POST, instance=Album.objects.get(pk=kwargs['id']))
+        form = AlbumForm(
+            self.request.POST, instance=Album.objects.get(pk=kwargs['id']))
         if self.request.method == 'POST' and form.is_valid():
             form.instance.owner = request.user
             form.save()
@@ -176,7 +178,9 @@ class EditPhotoView(TemplateView):
         return {'form': form, 'img': img.image.url}
 
     def post(self, request, *args, **kwargs):
-        form = PhotoForm(request.POST, request.FILES, instance=Photo.objects.get(pk=kwargs['id']))
+        form = PhotoForm(
+            request.POST, request.FILES, instance=Photo.objects.get(
+                pk=kwargs['id']))
         if request.method == 'POST' and form.is_valid():
             form.instance.owner = request.user
             form.save()
