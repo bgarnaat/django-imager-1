@@ -15,14 +15,14 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from .views import ClassView, logout_view, ProfileView, LibraryView, AlbumView
-from .views import PhotoView, AddAlbumView, AddPhotoView, EditAlbumView, EditPhotoView
+from .views import ClassView, logout_view, ProfileView, LibraryView
+from .views import AlbumView, AddAlbumView, EditAlbumView, DeleteAlbumView
+from .views import PhotoView, AddPhotoView, EditPhotoView, DeletePhotoView
 from django.conf.urls.static import static
 from imager import settings
 from django.contrib.auth.decorators import login_required
 
 
-# TODO: WRAP URLS IN LOGIN REQUIRED...  it will solve every problem ever, for realy-yo...
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', ClassView.as_view(), name='home_page'),
@@ -33,10 +33,12 @@ urlpatterns = [
     url(r'^images/library/$', login_required(LibraryView.as_view()), name='library'),
     url(r'^images/album/(?P<id>[0-9]+)$', login_required(AlbumView.as_view()), name='album'),
     url(r'^images/albums/add/$', login_required(AddAlbumView.as_view()), name='add_album'),
-    url(r'^images/albums/edit/(?P<id>[0-9]+)$', login_required(EditAlbumView.as_view()), name='add_album'),
+    url(r'^images/albums/edit/(?P<id>[0-9]+)$', login_required(EditAlbumView.as_view()), name='edit_album'),
+    url(r'^images/albums/delete/(?P<id>[0-9]+)$', login_required(DeleteAlbumView.as_view()), name='delete_album'),
     url(r'^images/photo/(?P<id>[0-9]+)$', login_required(PhotoView.as_view()), name='photo'),
     url(r'^images/photos/add/$', login_required(AddPhotoView.as_view()), name='add_photo'),
-    # url(r'^images/photos/edit/(?P<id>[0-9]+)$', EditPhotoView.as_view(), name='add_photo'),
+    url(r'^images/photos/edit/(?P<id>[0-9]+)$', login_required(EditPhotoView.as_view()), name='edit_photo'),
+    url(r'^images/photos/delete/(?P<id>[0-9]+)$', login_required(DeletePhotoView.as_view()), name='delete_photo'),
 ]
 
 if settings.DEBUG:

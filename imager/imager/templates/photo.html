@@ -6,6 +6,11 @@
   <h2>Photo</h2>
   <a href="/images/photo/{{img.id}}"><img src="{{img.image.url}}" alt="" width="100px" height="100px" /></a>
   <a href="/images/photo/{{img.id}}"><img src="{{img.image.url}}" alt="" /></a>
+  <a href="/images/photos/edit/{{img.id}}">Edit Photo</a>
+  <form action="/images/photos/delete/{{img.id}}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="KILL IT WITH FIRE!">
+  </form>
 </section>
 
 {% endblock %}

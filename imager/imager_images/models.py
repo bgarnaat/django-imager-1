@@ -19,7 +19,7 @@ class Photo(models.Model):
     def __str__(self):
         return self.title
 
-    image = models.ImageField(upload_to=MEDIA_ROOT)
+    image = models.ImageField(upload_to='photos/%Y-%m-%d')
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE

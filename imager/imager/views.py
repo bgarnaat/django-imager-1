@@ -66,7 +66,7 @@ class AlbumView(TemplateView):
 
     def get_context_data(self, *args, **kwargs):
         try:
-            album = Album.objects.all().filter(id=kwargs['id'])[0]
+            album = Album.objects.get(pk=kwargs['id'])
             photos = album.photos.all()
             img_qty = photos.count()
         except IndexError:
@@ -80,7 +80,7 @@ class PhotoView(TemplateView):
 
     def get_context_data(self, *args, **kwargs):
         try:
-            img = Photo.objects.get(pk=kwargs['id'])[0]
+            img = Photo.objects.get(pk=kwargs['id'])
         except IndexError:
             img = None
         return {'img': img}
@@ -137,9 +137,9 @@ class EditAlbumView(TemplateView):
     template_name = 'add_album.html'
 
     def get_context_data(self, *args, **kwargs):
-        album_edit = Album.objects.get(pk=kwargs['id'])[0]
+        album_edit = Album.objects.get(pk=kwargs['id'])
         data = {
-            'photos': album_edit.photos,
+            'photos': album_edit.photos.all(),
             'title': album_edit.title,
             'description': album_edit.description,
             'published': album_edit.published,
@@ -149,7 +149,7 @@ class EditAlbumView(TemplateView):
         return {'form': form}
 
     def post(self, request, *args, **kwargs):
-        form = AlbumForm(self.request.POST)
+        form = AlbumForm(self.request.POST, instance=Album.objects.get(pk=kwargs['id']))
         if self.request.method == 'POST' and form.is_valid():
             form.instance.owner = request.user
             form.save()
@@ -166,13 +166,34 @@ class EditPhotoView(TemplateView):
     template_name = 'add_photo.html'
 
     def get_context_data(self, *args, **kwargs):
-        form = PhotoForm()
-        return {'form': form}
+        img = Photo.objects.get(pk=kwargs['id'])
+        data = {
+            'title': img.title,
+            'description': img.description,
+            'published': img.published
+        }
+        form = PhotoEditForm(initial=data)
+        return {'form': form, 'img': img.image.url}
 
     def post(self, request, *args, **kwargs):
-        import pdb; pdb.set_trace()
-        form = PhotoForm(request.POST, request.FILES)
+        form = PhotoForm(request.POST, request.FILES, instance=Photo.objects.get(pk=kwargs['id']))
         if request.method == 'POST' and form.is_valid():
             form.instance.owner = request.user
             form.save()
+        return redirect('library')
+
+
+class DeleteAlbumView(TemplateView):
+
+    def post(self, request, *args, **kwargs):
+        if request.method == 'POST':
+            Album.objects.get(pk=kwargs['id']).delete()
+        return redirect('library')
+
+
+class DeletePhotoView(TemplateView):
+
+    def post(self, request, *args, **kwargs):
+        if request.method == 'POST':
+            Photo.objects.get(pk=kwargs['id']).delete()
         return redirect('library')
