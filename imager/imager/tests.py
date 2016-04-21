@@ -8,6 +8,12 @@ class ViewTests(TestCase):
         """Set up test client."""
         self.client = Client()
         self.user = UserFactory.create()
+        self.photo = PhotoFactory.create(
+            owner=self.user,
+        )
+        self.album = AlbumFactory.create(
+            owner=self.user,
+        )
 
     def test_homepage(self):
         """Test homepage view."""
@@ -58,11 +64,11 @@ class ViewTests(TestCase):
     def test_AlbumView(self):
         """Test album view for a specific user."""
         self.client.force_login(self.user)
-        response = self.client.get('/images/album/0')
+        response = self.client.get('/images/album/1')
         self.assertEquals(response.status_code, 200)
 
     def test_PhotoView(self):
         """Test photo view for a specific user."""
         self.client.force_login(self.user)
-        response = self.client.get('/images/photo/0')
+        response = self.client.get('/images/photo/3')
         self.assertEquals(response.status_code, 200)
