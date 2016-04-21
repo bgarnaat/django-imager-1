@@ -64,11 +64,43 @@ class ViewTests(TestCase):
     def test_AlbumView(self):
         """Test album view for a specific user."""
         self.client.force_login(self.user)
-        response = self.client.get('/images/album/1')
+        response = self.client.get('/images/album/{}'.format(self.album.id))
         self.assertEquals(response.status_code, 200)
 
     def test_PhotoView(self):
         """Test photo view for a specific user."""
         self.client.force_login(self.user)
-        response = self.client.get('/images/photo/3')
+        response = self.client.get('/images/photo/{}'.format(self.photo.id))
         self.assertEquals(response.status_code, 200)
+
+    def test_AlbumEditView(self):
+        """Test album edit view."""
+        self.client.force_login(self.user)
+        response = self.client.get(
+            '/images/albums/edit/{}'.format(self.album.id))
+        self.assertEquals(response.status_code, 200)
+
+    def test_AlbumEditView_post(self):
+        """Test album edit view."""
+        self.client.force_login(self.user)
+        temp_title = self.album.title
+        self.album.title = 'new title'
+        self.client.post('/images/albums/edit/{}'.format(self.album.id))
+        self.assertNotEqual(self.album.title, temp_title)
+        self.assertEquals(self.album.title, 'new title')
+
+    def test_PhotoEditView(self):
+        """Test album edit view."""
+        self.client.force_login(self.user)
+        response = self.client.get(
+            '/images/photos/edit/{}'.format(self.photo.id))
+        self.assertEquals(response.status_code, 200)
+
+    def test_PhotoEditView_post(self):
+        """Test album edit view."""
+        self.client.force_login(self.user)
+        temp_title = self.photo.title
+        self.photo.title = 'new title'
+        self.client.post('/images/photos/edit/{}'.format(self.photo.id))
+        self.assertNotEqual(self.photo.title, temp_title)
+        self.assertEquals(self.photo.title, 'new title')
