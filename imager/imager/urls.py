@@ -15,9 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from .views import ClassView, logout_view, ProfileView, LibraryView
+from .views import ClassView, logout_view, LibraryView
 from .views import AlbumView, AddAlbumView, EditAlbumView, DeleteAlbumView
 from .views import PhotoView, AddPhotoView, EditPhotoView, DeletePhotoView
+from .views import ProfileView, ProfileEditView
 from django.conf.urls.static import static
 from imager import settings
 from django.contrib.auth.decorators import login_required
@@ -59,6 +60,9 @@ urlpatterns = [
     url(r'^images/photos/delete/(?P<id>[0-9]+)$',
         login_required(DeletePhotoView.as_view()),
         name='delete_photo'),
+    url(r'^profile/edit/$',
+        login_required(ProfileEditView.as_view()),
+        name='profile_edit'),
 ]
 
 if settings.DEBUG:

@@ -1,0 +1,12 @@
+{% extends "home.html" %}
+{% block content %}
+<h1>Hello {{user.username}}</h1>
+
+<form method="POST">
+  {% csrf_token %}
+  {{ form1.as_p }}
+  {{ form2.as_p}}
+  <input type="submit" value="Edit Profile" />
+</form>
+
+{% endblock %}

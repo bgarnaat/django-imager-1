@@ -5,6 +5,7 @@ from django.views.generic import TemplateView
 from django.contrib.auth import logout
 from imager.settings import MEDIA_URL
 from imager_images.models import Photo, Album
+from imager_profile.models import ImagerProfile
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from datetime import datetime as flegal
@@ -200,4 +201,50 @@ class DeletePhotoView(TemplateView):
     def post(self, request, *args, **kwargs):
         if request.method == 'POST':
             Photo.objects.get(pk=kwargs['id']).delete()
+        return redirect('library')
+
+
+class ProfileEditForm(ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email']
+
+
+class ImagerProfileEditForm(ModelForm):
+    class Meta:
+        model = ImagerProfile
+        fields = ['camera_type', 'type_of_photography', 'friends', 'region']
+
+
+class ProfileEditView(TemplateView):
+    template_name = 'edit_profile.html'
+
+    def get_context_data(self, *args, **kwargs):
+        data1 = {
+            'username': self.request.user.username,
+            'email': self.request.user.email,
+        }
+        form1 = ProfileEditForm(initial=data1)
+
+        profile = ImagerProfile.objects.get(user=self.request.user)
+        data2 = {
+            'camera_type': profile.camera_type,
+            'type_of_photography': profile.type_of_photography,
+            'friends': profile.friends.all(),
+            'region': profile.region,
+        }
+
+        form2 = ImagerProfileEditForm(initial=data2)
+        return {'form1': form1, 'form2': form2}
+
+    def post(self, request, *args, **kwargs):
+        form1 = ProfileEditForm(request.POST, instance=User.objects.get(
+            username=request.user.username))
+        form2 = ImagerProfileEditForm(
+            request.POST, instance=ImagerProfile.objects.get(
+                user=request.user))
+        if request.method == 'POST' and form1.is_valid() and form2.is_valid():
+            form2.instance.user = request.user
+            form1.save()
+            form2.save()
         return redirect('library')
