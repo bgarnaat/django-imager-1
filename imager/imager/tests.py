@@ -1,6 +1,7 @@
 from django.test import TestCase, Client
 from imager_images.tests import PhotoFactory, AlbumFactory
 from imager_profile.tests import UserFactory
+from imager_images.models import Photo, Album
 
 
 class ViewTests(TestCase):
@@ -52,15 +53,6 @@ class ViewTests(TestCase):
         response = self.client.get('/images/library/')
         self.assertEquals(response.status_code, 200)
 
-    # def test_LibraryView_no_login(self):
-    #     """Test library view for a specific user."""
-    #     # self.client.force_login(self.user)
-    #     # import pdb; pdb.set_trace()
-    #     response = self.client.get('/images/library/', follow=True)
-    #     self.assertEquals(response.status_code, 200)
-    #     self.assertEquals(
-    #         response.redirect_chain[0], ('/images/library/', 301))
-
     def test_AlbumView(self):
         """Test album view for a specific user."""
         self.client.force_login(self.user)
@@ -104,3 +96,78 @@ class ViewTests(TestCase):
         self.client.post('/images/photos/edit/{}'.format(self.photo.id))
         self.assertNotEqual(self.photo.title, temp_title)
         self.assertEquals(self.photo.title, 'new title')
+
+    def test_PhotoEditView_nologin(self):
+        response = self.client.get(
+            '/images/photos/edit/{}'.format(self.photo.id))
+        self.assertIn('/accounts/login', response.url)
+        self.assertEquals(response.status_code, 302)
+
+    def test_AlbumEditView_nologin(self):
+        response = self.client.get(
+            '/images/albums/edit/{}'.format(self.album.id))
+        self.assertIn('/accounts/login', response.url)
+        self.assertEquals(response.status_code, 302)
+
+    def test_PhotoAddView(self):
+        """Test photo add view."""
+        self.client.force_login(self.user)
+        response = self.client.get('/images/photos/add/')
+        self.assertEquals(response.status_code, 200)
+
+    def test_PhotoAddView_nologin(self):
+        """Test photo add view no login."""
+        response = self.client.get('/images/photos/add/')
+        self.assertIn('/accounts/login', response.url)
+        self.assertEquals(response.status_code, 302)
+
+    def test_AlbumAddView(self):
+        """Test album add view."""
+        self.client.force_login(self.user)
+        response = self.client.get('/images/albums/add/')
+        self.assertEquals(response.status_code, 200)
+
+    def test_AlbumAddView_nologin(self):
+        """Test album add view no login."""
+        response = self.client.get('/images/albums/add/')
+        self.assertIn('/accounts/login', response.url)
+        self.assertEquals(response.status_code, 302)
+
+    def test_ProfileEditView(self):
+        """Test profile edit view."""
+        self.client.force_login(self.user)
+        response = self.client.get('/profile/edit/')
+        self.assertEquals(response.status_code, 200)
+
+    def test_ProfileEditView_post(self):
+        """Test profile edit view."""
+        self.client.force_login(self.user)
+        temp_title = self.user.username
+        self.user.username = 'new username'
+        self.client.post('/profile/edit/')
+        self.assertNotEqual(self.user.username, temp_title)
+        self.assertEquals(self.user.username, 'new username')
+
+    def test_ProfileEditView_nologin(self):
+        """Test profile edit view no login."""
+        response = self.client.get('/profile/edit/')
+        self.assertIn('/accounts/login', response.url)
+        self.assertEquals(response.status_code, 302)
+
+    def test_PhotoDeleteView(self):
+        """Test photo delete view."""
+        self.client.force_login(self.user)
+        response = self.client.post(
+            '/images/photos/delete/{}'.format(self.photo.id))
+        with self.assertRaises(Photo.DoesNotExist):
+            Photo.objects.get(id=self.photo.id)
+        self.assertEquals(response.status_code, 302)
+
+    def test_AlbumDeleteView(self):
+        """Test photo delete view."""
+        self.client.force_login(self.user)
+        response = self.client.post(
+            '/images/albums/delete/{}'.format(self.album.id))
+        with self.assertRaises(Album.DoesNotExist):
+            Album.objects.get(id=self.album.id)
+        self.assertEquals(response.status_code, 302)
