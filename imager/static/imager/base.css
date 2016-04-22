@@ -1,0 +1,28 @@
+body {
+    background-color: orange;
+}
+
+h1 {
+    width: 50%;
+    font-size: 3em;
+    text-decoration: overline;
+}
+
+a {
+    text-decoration: none;
+    color: #43E80C;
+}
+
+a:hover {
+    color:#C1C;
+    /*transform: rotate(90deg);*/
+}
+
+li {
+    font-size: 3em;
+    margin: 1px;
+}
+
+li:hover {
+    transform: rotateX(180deg);
+}

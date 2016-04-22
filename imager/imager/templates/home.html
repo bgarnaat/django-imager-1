@@ -3,10 +3,12 @@
   <head>
     <meta charset="utf-8">
     <title>Imager Site</title>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'imager/base.css' %}" />
   </head>
   <body>
     <header>
-      <h1><a href="/accounts/profile">{{user.username}}</a></h1>
+      <h2><a href="/accounts/profile">{{user.username}}</a></h2>
       <img id="logo" src="{{img_url}}" alt="" />
       <h1>TITLE GOES HERE</h1>
       <ul id="loginout">
