@@ -10,16 +10,21 @@
       <img id="logo" src="{{img_url}}" alt="" />
       <h1>TITLE GOES HERE</h1>
       <ul id="loginout">
-        <li class="loginout"><a href="/accounts/login">Login</a></li>
+        {% if user.is_authenticated %}
         <li class="loginout"><a href="/logout">Logout</a></li>
+        {% else %}
+        <li class="loginout"><a href="/accounts/login">Login</a></li>
         <li class="loginout"><a href="/accounts/register">Register</a></li>
+        {% endif %}
       </ul>
       <nav>
         <ul id="nav_ul">
           <li class="nav_li"><a href="/">Home</a></li>
+          {% if user.is_authenticated %}
           <li class="nav_li"><a href="/images/library/">Library</a></li>
           <li class="nav_li"><a href="/images/albums/add">Add Album</a></li>
           <li class="nav_li"><a href="/images/photos/add">Add Photo</a></li>
+          {% endif %}
         </ul>
       </nav>
     </header>
