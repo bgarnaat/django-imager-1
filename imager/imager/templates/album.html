@@ -13,6 +13,11 @@
       <li><a href="/images/photo/{{photo.id}}"><img src="{{photo.image.url}}" alt="" width="100px" height="100px" /></a></li>
     {% endfor %}
   </ul>
+  <a href="/images/albums/edit/{{album.id}}">Edit Album</a>
+  <form action="/images/albums/delete/{{album.id}}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="KILL IT WITH FIRE!">
+  </form>
 </section>
 
 {% endblock %}
