@@ -144,4 +144,11 @@ MEDIA_URL = '/media/'
 ACCOUNT_ACTIVATION_DAYS = 7
 
 # Email backends
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'djangoimager1000'
+EMAIL_HOST_PASSWORD = 'testpassword1000'
+EMAIL_USE_TLS = True
+DEFAULT_EMAIL_FROM = 'djangoimager1000@gmail.com'
