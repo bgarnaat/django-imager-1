@@ -63,3 +63,7 @@ target/
 
 #media
 media/
+
+#static
+static/admin/
+admin/

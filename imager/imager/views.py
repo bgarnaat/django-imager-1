@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 from django.contrib.auth import logout
-from imager.settings import MEDIA_URL
+from imager.settings import STATIC_URL
 from imager_images.models import Photo, Album
 from imager_profile.models import ImagerProfile
 from django.contrib.auth.models import User
@@ -27,7 +27,7 @@ class ClassView(TemplateView):
                 published='public').order_by('?')[0]
             img_url = img.image.url
         except IndexError:
-            img_url = os.path.join(MEDIA_URL, 'neil.jpg')
+            img_url = os.path.join(STATIC_URL, 'imager', 'neil.jpg')
         return {'img_url': img_url}
 
 
@@ -53,8 +53,8 @@ class LibraryView(TemplateView):
             try:
                 album_cover.append((item.photos.all()[0].image.url, item.id))
             except IndexError:
-                album_cover.append(
-                    (os.path.join(MEDIA_URL, 'neil.jpg'), item.id))
+                album_cover.append((
+                    os.path.join(STATIC_URL, 'imager', 'neil.jpg'), item.id))
         return {
             'album_cover': album_cover,
             'album_qty': album_qty,
