@@ -6,6 +6,7 @@ h1 {
     width: 50%;
     font-size: 3em;
     text-decoration: overline;
+    -webkit-animation: rwbfader 5s infinite;
 }
 
 a {
@@ -14,8 +15,7 @@ a {
 }
 
 a:hover {
-    color:#C1C;
-    /*transform: rotate(90deg);*/
+    -webkit-animation: fader 2s infinite;
 }
 
 li {
@@ -25,4 +25,20 @@ li {
 
 li:hover {
     transform: rotateX(180deg);
+}
+
+@-webkit-keyframes fader {
+    0% {color: #43E80C;}
+    20% {color: red;}
+    40% {color: white;}
+    60% {color: blue;}
+    80% {color: #C1C;}
+    1000% {color: #43E80C;}
+}
+
+@-webkit-keyframes rwbfader {
+    0% {color: blue;}
+    20% {color: red;}
+    60% {color: white;}
+    100% {color: blue;}
 }
