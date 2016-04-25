@@ -20,12 +20,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '#kizucnmpkr-7pcevo&5+1rvu_w8#w=3)$)ohjnr+q&zxf9brg'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = ['ec2-54-191-134-237.us-west-2.compute.amazonaws.com', 'localhost']
+ALLOWED_HOSTS = ['localhost']
 
 
 # Application definition
@@ -144,7 +145,6 @@ MEDIA_URL = '/media/'
 ACCOUNT_ACTIVATION_DAYS = 7
 
 # Email backends
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
