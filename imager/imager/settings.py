@@ -151,4 +151,4 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = os.environ.get('GMAIL_USERNAME')
 EMAIL_HOST_PASSWORD = os.environ.get('GMAIL_PW')
 EMAIL_USE_TLS = True
-DEFAULT_EMAIL_FROM = os.environ.get('GMAIL_USERNAME') + '@gmail.com'
+DEFAULT_EMAIL_FROM = ''.join([os.environ.get('GMAIL_USERNAME'), '@gmail.com'])
