@@ -26,7 +26,8 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 DEBUG = False
 
 # ALLOWED_HOSTS = ['ec2-54-191-134-237.us-west-2.compute.amazonaws.com', 'localhost']
-ALLOWED_HOSTS = ['localhost']
+# ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = ['localhost', os.environ.get('DJANGO_ALLOWED_HOST')]
 
 
 # Application definition
@@ -40,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'imager_profile',
     'imager_images',
-    'sorl.thumbnail',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -148,7 +148,7 @@ ACCOUNT_ACTIVATION_DAYS = 7
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'djangoimager1000'
-EMAIL_HOST_PASSWORD = 'testpassword1000'
+EMAIL_HOST_USER = os.environ.get('GMAIL_USERNAME')
+EMAIL_HOST_PASSWORD = os.environ.get('GMAIL_PW')
 EMAIL_USE_TLS = True
-DEFAULT_EMAIL_FROM = 'djangoimager1000@gmail.com'
+DEFAULT_EMAIL_FROM = os.environ.get('GMAIL_USERNAME') + '@gmail.com'
