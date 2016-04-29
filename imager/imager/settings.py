@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # ALLOWED_HOSTS = ['ec2-54-191-134-237.us-west-2.compute.amazonaws.com', 'localhost']
 # ALLOWED_HOSTS = ['localhost']
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'imager_profile',
     'imager_images',
     'imager_api',
+    'rest_framework',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -155,5 +156,5 @@ EMAIL_USE_TLS = True
 DEFAULT_EMAIL_FROM = ''.join([os.environ.get('GMAIL_USERNAME'), '@gmail.com'])
 
 REST_FRAMEWORK = {
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 10,
 }

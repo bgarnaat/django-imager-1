@@ -1,17 +1,48 @@
-from imager_images.models import Photo
-from imager_api.serializers import PhotoSerializer
-from rest_framework.response import Response
-from rest_framework import renderers
-from rest_framework import viewsets
-from rest_framework.decorators import detail_route
+from imager_images.models import Photo, Album
+from imager_api.serializers import PhotoSerializer, AlbumSerializer
+from rest_framework import generics
 
 
-class PhotoViewSet(viewsets.ModelViewSet):
-    """Set photo view."""
-    queryset = Photo.objects.all()
+class PhotoList(generics.ListAPIView):
     serializer_class = PhotoSerializer
 
-    @detail_route(renderer_classes=[renderers.StaticHTMLRenderer])
-    def highlight(self, request, *args, **kwargs):
-        photo = self.get_object()
-        return Response(photo.highlighted)
+    def get_queryset(self):
+        owner = self.request.user
+        try:
+            return Photo.objects.all().filter(owner=owner)
+        except:
+            return []
+
+
+class PhotoDetail(generics.RetrieveAPIView):
+    serializer_class = PhotoSerializer
+    queryset = Photo.objects.all()
+
+    def get_queryset(self):
+        owner = self.request.user
+        try:
+            return Photo.objects.all().filter(owner=owner)
+        except:
+            return []
+
+class AlbumList(generics.ListAPIView):
+    serializer_class = AlbumSerializer
+
+    def get_queryset(self):
+        owner = self.request.user
+        try:
+            return Album.objects.all().filter(owner=owner)
+        except:
+            return []
+
+
+class AlbumDetail(generics.RetrieveAPIView):
+    serializer_class = AlbumSerializer
+    queryset = Album.objects.all()
+
+    def get_queryset(self):
+        owner = self.request.user
+        try:
+            return Album.objects.all().filter(owner=owner)
+        except:
+            return []
