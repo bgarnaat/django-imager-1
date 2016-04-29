@@ -27,7 +27,6 @@ from django.contrib.auth.decorators import login_required
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', ClassView.as_view(), name='home_page'),
-    # url(r'^login/$', 'django.contrib.auth.views.login'),
     url(r'^logout/$', logout_view),
     url(r'^accounts/', include('registration.backends.hmac.urls')),
     url(r'^accounts/profile/$',
@@ -63,6 +62,7 @@ urlpatterns = [
     url(r'^profile/edit/$',
         login_required(ProfileEditView.as_view()),
         name='profile_edit'),
+    url(r'^', include('imager_api.urls')),
 ]
 
 if settings.DEBUG:
