@@ -63,6 +63,7 @@ urlpatterns = [
     url(r'^profile/edit/$',
         login_required(ProfileEditView.as_view()),
         name='profile_edit'),
+    url(r'^', include('imager_api.urls')),
 ]
 
 if settings.DEBUG:

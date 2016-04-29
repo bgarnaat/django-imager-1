@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'imager_profile',
     'imager_images',
+    'imager_api',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -152,3 +153,7 @@ EMAIL_HOST_USER = os.environ.get('GMAIL_USERNAME')
 EMAIL_HOST_PASSWORD = os.environ.get('GMAIL_PW')
 EMAIL_USE_TLS = True
 DEFAULT_EMAIL_FROM = ''.join([os.environ.get('GMAIL_USERNAME'), '@gmail.com'])
+
+REST_FRAMEWORK = {
+    'PAGE_SIZE': 10
+}
